@@ -1,0 +1,13 @@
+##### COMMANDS TO PUSH SOME FILE IN GITHUB REPOSITORY##########
+
+First:
+
+git clone
+git init 
+git status
+git add file
+git commit -m "comment"
+git push
+
+user: avaldezp22
+password: 2018

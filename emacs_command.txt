@@ -1,0 +1,33 @@
+######## List of commands for use emacs #####################
+
+Put in practice this amazing editor...! :)
+
+[ CTRL ] + x + 1
+
+Create windows or folders like terminals to work, if u r editing some text it copy everything
+
+[ CTRL ] + x + 2 #Other window
+
+[ CTRL ] + x + 0 #close that window
+
+[ CTRL ] + x + o # move to other windows.
+
+[ CTRL ] + x + [ CTRL ] SHIT  + C #Close emacs.
+
+[ CTRL ] + x + u # command to undo operation.
+
+[ CTRL ] + w#  copy the line but first we net to put [ CTRL ] SHIFT + [space bar] then i could select  moving forward with the button arrow.
+
+[ CTRL ] + y # paste the line copied before.
+
+[ CTRL ] + x + [ CTRL ]  +f # Allows you to find a file in your folder
+
+
+
+
+
+
+
+
+
+

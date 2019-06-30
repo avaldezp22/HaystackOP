@@ -22,7 +22,13 @@ Create windows or folders like terminals to work, if u r editing some text it co
 
 [ CTRL ] + x + [ CTRL ]  +f # Allows you to find a file in your folder
 
+For search words in buffer:
 
+[ALT] +s +w + word # to search for a word
+
+[CTRL] + s # jump to next occurrence
+
+[CTRL] + r # jump to previos occurrence
 
 
 

@@ -4,56 +4,6 @@
 # Options:
 # - center frequency
 # - start time
-# - transmit file
-# gnuradio 3.6.4.1
-# Timing format: (start_time, repetition_time). For example (0,100) would indicate that the experiment repeats
-# every 100 s and start 0 seconds past midnight.
-#
-
-from gnuradio import gr, blocks
-from gnuradio import uhd
-#from gnuradio.eng_option import eng_option
-#from gnuradio.filter import firdes
-from argparse import ArgumentParser
-import math, time, calendar
-
-import sampler_util
-import numpy
-
-class beacon_transmit:
-	def __init__(self,args):
-		self.args = args
-
-	def print_info(self,uinfo):
-		print "mboard id %s"%uinfo.get("mboard_id")
-		print "mboard serial %s"%uinfo.get("mboard_serial")
-		print "tx db name %s"%uinfo.get("tx_subdev_name")
-
-	def start(self):
-		txlog = open("hftx.log","w")
-		tb = gr.top_block()
-		sampler_util.real_time_scheduling()
-		tstart_tx = time.time()
-		tnow = time.time()
-		dev_str = "addr=%s,send_buff_size=10000000"%(self.args.ip)
-		sink = uhd.usrp_sink(
-			device_addr=dev_str,
-			stream_args=uhd.stream_args(
-				cpu_format="fc32",
-				otw_format="sc16",
-				channels=range(1),
-			),
-		)
-		self.print_info(sink.get_usrp_info(0))
-
-		#async_msgq = gr.msg_queue(0)Commented by Alejandro
-		#async_src = uhd.amsg_source("", async_msgq)Commented by Alejandro
-		#        sink_msgsrc = uhd.amsg_source(uhd.device_addr(self.args.ip),sink_queue)
-
-		sink.set_clock_source(self.args.clocksource, 0)
-		sink.set_time_source(self.args.clocksource, 0)
-		print (sink.get_mboard_sensor("ref_locked"))
-
 		next_time = sampler_util.find_next(self.args.start_time, per=self.args.rep)
 		print "Starting at ",next_time
 

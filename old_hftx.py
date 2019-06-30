@@ -10,7 +10,7 @@
 # every 100 s and start 0 seconds past midnight.
 # This program is the last version of HF Tx, the main difference is some updates between libraries of gnuradio, the delete of some lines and the addition of some comments. This version of gnuradio change,this program use sampler_util which is not available in newest version. Its part of the old library version digital_rf, and in the case of acquisition we use juha library, e.g.(import juha)
 # sampler_util helps to define a period of repetion of the task in this case the Tx code 
-#
+# This program use Argumentparser instead of Optionparser, some attributes are passed through command line and using the self property.
 
 from gnuradio import gr, blocks
 from gnuradio import uhd
@@ -32,7 +32,7 @@ class beacon_transmit:
 	def start(self):
 		txlog = open("hftx.log","w")
 		tb = gr.top_block()
-		sampler_util.real_time_scheduling()
+		sampler_util.real_time_scheduling() # DECLARATION OF SAMPLER_UTIL
 		tstart_tx = time.time()
 		tnow = time.time()
 		dev_str = "addr=%s,send_buff_size=10000000"%(self.args.ip)
@@ -50,7 +50,7 @@ class beacon_transmit:
 		sink.set_time_source(self.args.clocksource, 0)
 		print (sink.get_mboard_sensor("ref_locked"))
 
-		next_time = sampler_util.find_next(self.args.start_time, per=self.args.rep)
+		next_time = sampler_util.find_next(self.args.start_time, per=self.args.rep) # LENGTH OF TIME
 		print "Starting at ",next_time
 
 		tt = time.time()
@@ -72,7 +72,7 @@ class beacon_transmit:
 		print "===> self.args.amplitude: %s"%(self.args.amplitude)
 		multiply = blocks.multiply_const_vcc((self.args.amplitude, ))
 
-		tb.connect(code_source, multiply, sink)
+		tb.connect(code_source, multiply, sink) # CONNECTIO BETWEEN BLOCKS CODIGO, GAIN, USRP i.e.(sink)
 		tb.start()
 		self.print_info(sink.get_usrp_info(0))
 		print "Starting"

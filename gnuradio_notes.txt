@@ -1,0 +1,16 @@
+####### GNURADIOS NOTES ################
+
+
+One important thing before works with gnuradio-companion is define the type of block that we want to generate in this case. There is a box call Options in which we can select tha Generate Option:
+
+- Bokeh GUI
+- QTGUI
+- WXGUI
+- NOGUI
+- HIER BLOCK
+- HIER BLOCK (QT GUI)
+
+We can see this in the next link:
+
+https://pezmanlou.wordpress.com/2018/07/27/gnuradio-cant-generate-this-block-in-mode-hb/
+

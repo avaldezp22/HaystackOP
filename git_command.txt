@@ -9,5 +9,12 @@ git add file
 git commit -m "comment"
 git push
 
-user: avaldezp22
+user: p22
 password: p201
+
+For update some changes:
+
+git add . 
+git status
+git commit -m "Add your commit message here"
+git push origin master

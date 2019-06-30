@@ -8,6 +8,8 @@
 # gnuradio 3.6.4.1
 # Timing format: (start_time, repetition_time). For example (0,100) would indicate that the experiment repeats
 # every 100 s and start 0 seconds past midnight.
+# This program is the last version of HF Tx, the main difference is some updates between libraries of gnuradio, the delete of some lines and the addition of some comments. This version of gnuradio change,this program use sampler_util which is not available in newest version. Its part of the old library version digital_rf, and in the case of acquisition we use juha library, e.g.(import juha)
+# sampler_util helps to define a period of repetion of the task in this case the Tx code 
 #
 
 from gnuradio import gr, blocks
@@ -44,10 +46,6 @@ class beacon_transmit:
 		)
 		self.print_info(sink.get_usrp_info(0))
 
-		#async_msgq = gr.msg_queue(0)Commented by Alejandro
-		#async_src = uhd.amsg_source("", async_msgq)Commented by Alejandro
-		#        sink_msgsrc = uhd.amsg_source(uhd.device_addr(self.args.ip),sink_queue)
-
 		sink.set_clock_source(self.args.clocksource, 0)
 		sink.set_time_source(self.args.clocksource, 0)
 		print (sink.get_mboard_sensor("ref_locked"))
@@ -69,21 +67,17 @@ class beacon_transmit:
 		print "===> self.args.gain: %s"%(self.args.gain)
 		sink.set_gain(self.args.gain, 0)
 		sink.set_antenna(self.args.txport, 0)
-		#code_source = gr.file_source(gr.sizeof_gr_complex*1, self.args.codefile, True)
 		code_vector = numpy.fromfile(self.args.codefile,dtype=numpy.complex64)
 		code_source = blocks.vector_source_c(code_vector.tolist(), True)
-		#multiply = gr.multiply_const_vcc((0.5, ))
 		print "===> self.args.amplitude: %s"%(self.args.amplitude)
 		multiply = blocks.multiply_const_vcc((self.args.amplitude, ))
 
 		tb.connect(code_source, multiply, sink)
-		#        tb.connect((async_src, msg), (sink_queue, 0))
 		tb.start()
 		self.print_info(sink.get_usrp_info(0))
 		print "Starting"
 		print "Restart time: "+str(self.args.restart_time)
 		while(True):
-			print("Cae0")
 			tnow = time.time()
 			if (tnow - tstart_tx) > self.args.restart_time:
 				tb.stop()
@@ -92,23 +86,11 @@ class beacon_transmit:
 			print("Cae1")
 			if self.args.clocksource == "gpsdo":
 				txlog.write("%s %s\n"%(sampler_util.time_stamp(),sink.get_mboard_sensor("gps_locked")))
-			print("Cae2")
-
-			# print('Sensors names:\n')
-			# print(sink.get_mboard_sensor_names())
-			# print('\n')
 			txlog.write("%s %s\n"%(sampler_util.time_stamp(),sink.get_mboard_sensor("ref_locked")))
-			#txlog.write("%s %1.2f\n"%(sampler_util.time_stamp(),sink.get_time_now().get_real_secs()))
 			txlog.write("%s\n"%(sampler_util.time_stamp()))
-			print("Cae3")
-			# if async_msgq.count(): The whole block was commented by Alejandro
-			# 	print("Have no sense \n")
-			# 	md = async_src.msg_to_async_metadata_t(async_msgq.delete_head())
-			# 	txlog.write("%s async Channel: %i Time: %f Event: %i" % (sampler_util.time_stamp(),md.channel, md.time_spec.get_real_secs(), md.event_code))
-			print("Cae4")
 			txlog.flush()
 			time.sleep(10.0)
-			print("Cae5")
+			
 
 
 if __name__ == '__main__':

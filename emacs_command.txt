@@ -30,6 +30,8 @@ For search words in buffer:
 
 [CTRL] + r # jump to previos occurrence
 
+[ALT] + g +[ALT] +g + xx # go to line xx
+
 
 
 

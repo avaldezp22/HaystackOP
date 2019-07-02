@@ -1,0 +1,12 @@
+import os
+import prc_analyze.py
+
+
+
+codefile = "/home/alex/digital_rf/python/examples/sounder/waveforms/const.bin"
+
+path,filename = os.path.split(codefile) 
+
+code_vector = numpy.fromfile(codefile,dtype=numpy.complex64)
+print filename
+print "code_Tx",code_vector.shape

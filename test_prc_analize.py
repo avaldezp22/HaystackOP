@@ -22,9 +22,12 @@ def codigo(args):
     os.chdir(PATH)
     for file in glob.glob("*.bin"):
         code_list.append(file)
+
     print code_list
     raw_input("<Press enter>")
     codefile =PATH+code_list[args.code]
+    if args.dir_code is not None:
+	codefile=args.dir_code 
     path,filename = os.path.split(codefile) 
     code_vector = np.fromfile(codefile,dtype=np.complex64)
     print "CODE ACTIVATE %d"%args.code,filename
@@ -36,6 +39,10 @@ def codigo(args):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
+
+    parser.add_argument("-dir_code", "--dir_code",dest="dir_code", action="store", type=str,default= None,
+                                          help="Insert file.")
+
 
     parser.add_argument('-code', '--code', type=int, default=0,
              help='''Number of code. (default: %(default)s)''',

@@ -12,7 +12,7 @@ Create windows or folders like terminals to work, if u r editing some text it co
 
 [ CTRL ] + x + o # move to other windows.
 
-[ CTRL ] + x + [ CTRL ] SHIT  + C #Close emacs.
+[ CTRL ] + x + [ CTRL ]  + C #Close emacs.
 
 [ CTRL ] + x + u # command to undo operation.
 
@@ -32,7 +32,7 @@ For search words in buffer:
 
 [ALT] + g +[ALT] +g + xx # go to line xx
 
-
+[CTRL]+ x + h # Select all the contain
 
 
 

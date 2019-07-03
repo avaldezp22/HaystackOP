@@ -1,0 +1,42 @@
+#!python
+import numy as np
+import prc_analyze
+
+def wave_fft(args):
+    if args.file is None:
+        print "Write a path with a filename to read numpy.fromfile"
+    else:
+        file_w = args.file
+    wave_f= np.fromfile(file_w,dtype=np.complex64)
+    fft = np.fft.fft(wave_f)
+    prc_analyze.plot_cts(code_vector,plot_abs=args.abso,plot_draw=plot_draw,plot_show=args.show)
+    
+
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument("-file", "--file",dest="file", action="store", type=str,default= None,
+                                          help="Insert file.")
+
+    parser.add_argument('-code', '--code', type=int, default=0,
+             help='''Number of code. (default: %(default)s)''',
+             )
+
+    parser.add_argument('-point', '--point', type=int, default=100,
+             help='''Number of points to plot . (default: %(default)s)''',
+             )
+
+    parser.add_argument('-abso', '--abso', type=str2bool, default=False,
+        help='''Show abs of the signal.''',
+    )
+
+    parser.add_argument('-show', '--show', type=str2bool, default=False,
+        help='''Show abs of the signal.''',
+    )
+    
+
+    args = parser.parse_args()
+
+    codigo(args)
+
+    
+        

@@ -1659,3 +1659,8 @@ if __name__ == '__main__':
     parser = _build_thor_parser(argparse.ArgumentParser)
     args = parser.parse_args()
     args.func(args)
+
+
+
+# command to RX with clock source 10 Mhz :D working
+#python thor.py -m 172.16.5.108 -d "A:A" -y "RX"  -r 1e6 -f 30e6 -datadir /home/alex/data_wgcc/ --nosync   --clock_source 'external'

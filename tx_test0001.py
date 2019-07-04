@@ -591,7 +591,9 @@ class Tx(object):
             # (at time math.ceil(tt))
             # then sets the time for the subsequent pps
             # (at time math.ceil(tt) + 1.0)
-            u.set_time_unknown_pps(uhd.time_spec(math.ceil(tt) + 1.0))
+            #####u.set_time_unknown_pps(uhd.time_spec(math.ceil(tt) + 1.0))
+            ################LINEA 594 MY RISK
+            u.set_time_now(uhd.time_spec(tt), uhd.ALL_MBOARDS)
             # wait for time registers to be in known state
             time.sleep(math.ceil(tt) - tt + 1.0)
         else:
@@ -974,4 +976,3 @@ if __name__ == '__main__':
 
 
 #G Gain  0.5   500 mVpp
-

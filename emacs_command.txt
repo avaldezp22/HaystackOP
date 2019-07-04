@@ -16,15 +16,44 @@ Create windows or folders like terminals to work, if u r editing some text it co
 
 [ CTRL ] + x + u # command to undo operation.
 
+Copy and delete command
+
+[ CTRL ] + d #delete character under cursor
+
+[ CTRL ] +  #delete the rest of the current line
+
 [ CTRL ] + w#  copy the line but first we net to put [ CTRL ] SHIFT + [space bar] then i could select  moving forward with the button arrow.
 
 [ CTRL ] + y # paste the line copied before.
 
 [ CTRL ] + x + [ CTRL ]  +f # Allows you to find a file in your folder
 
+[ CTRL ] + x + [ CTRL ]  +s # save buffer or file edition
+
+[ CTRL ] + x + [ CTRL ]  +w # prompts for a new filename and writes the buffer
+
+Cursor/screen
+
+[ CTRL ] + a # go to the begining of line
+
+[ CTRL ] + e # g to end of line
+
+[ CTRL ] + f # move forward one caracter
+
+[ CTRL ] + b # move backward one caracter
+
+[ CTRL ] + p # move to previus line
+
+[ CTRL ] + n # move to next line
+
+[ CTRL ] + v # scroll filel forwrd by one screefull
+
+
 For search words in buffer:
 
 [ALT] +s +w + word # to search for a word
+
+[ CTRL ] + s # isearch forward
 
 [CTRL] + s # jump to next occurrence
 

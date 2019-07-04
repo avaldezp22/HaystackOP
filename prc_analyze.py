@@ -126,27 +126,32 @@ def analyze_prc(
         g = dirn
 
     code = create_pseudo_random_code(clen=clen, seed=station)
-    N = an_len / clen
+    #print ("code_rx", code.shape)
+    N = int(an_len/clen)
     res = np.zeros([N, Nranges], dtype=np.complex64)
     r = create_estimation_matrix(code=code, cache=cache, rmax=Nranges)
     B = r['B']
+    #print  (" Bshape ", B.shape)
     spec = np.zeros([N, Nranges], dtype=np.complex64)
 
     for i in np.arange(N):
         z = g.read_vector_c81d(idx0 + i * clen, clen, channel)
         z = z - np.median(z)  # remove dc
+        #print ("z.shape",z.shape)
+        a = np.dot(B, z)
+        
         res[i, :] = np.dot(B, z)
+        #print ("res.shape",res.shape)
     for i in np.arange(Nranges):
-        spec[:, i] = np.fft.fftshift(np.fft.fft(
-            scipy.signal.blackmanharris(N) * res[:, i]
-        ))
+        #spec[:, i] = np.fft.fftshift(np.fft.fft(scipy.signal.blackmanharris(N) * res[:, i]))
+        spec[:,i]  = np.fft.fftshift(np.fft.fft( res[:, i]))
 
-    if rfi_rem:
-        median_spec = np.zeros(N, dtype=np.float32)
-        for i in np.arange(N):
-            median_spec[i] = np.median(np.abs(spec[i, :]))
-        for i in np.arange(Nranges):
-            spec[:, i] = spec[:, i] / median_spec[:]
+    #if rfi_rem:
+    #    median_spec = np.zeros(N, dtype=np.float32)
+    #    for i in np.arange(N):
+    #        median_spec[i] = np.median(np.abs(spec[i, :]))
+    #    for i in np.arange(Nranges):
+    #        spec[:, i] = spec[:, i] / median_spec[:]
     ret = {}
     ret['res'] = res
     ret['spec'] = spec
@@ -189,6 +194,17 @@ if __name__ == '__main__':
         '-n', '--analysis_length', dest='anlen', type=int, default=6000000,
         help='''Analysis length. (default: %(default)s)''',
     )
+    
+    parser.add_argument(
+        '-clen', '--code_length', dest='codelen', type=int, default=10000,
+        help='''Code length. (default: %(default)s)''',
+    )
+
+    parser.add_argument(
+        '-s', '--station', dest='station', type=int, default=0,
+        help='''Seed-station. (default: %(default)s)''',
+    )
+    
     parser.add_argument(
         '-r', '--nranges', type=int, default=1000,
         help='''Number of range gates. (default: %(default)s)''',
@@ -217,7 +233,7 @@ if __name__ == '__main__':
         fidx = np.fromfile(datpath, dtype=np.int)
         if b[0] <= fidx:
             idx = fidx
-
+            
     while True:
         if idx + op.anlen > b[1]:
             print('waiting for more data, sleeping.')

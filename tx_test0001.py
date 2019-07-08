@@ -974,5 +974,5 @@ if __name__ == '__main__':
 # python tx_test0001.py -d A:0 -f 30e6 -r 1e6 -y "TX/RX" -G 0.5 -P 0 -b 0 -l 1  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin --starttime 2019-07-02T13:05:00Z --duration 100 --nosync
 
 
-
+# -p period debe ser 1
 #G Gain  0.5   500 mVpp

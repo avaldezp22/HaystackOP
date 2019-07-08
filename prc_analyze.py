@@ -127,9 +127,10 @@ def analyze_prc(
 
     code = create_pseudo_random_code(clen=clen, seed=station)
     #print ("code_rx", code.shape)
-    N = int(an_len/clen)
-    res = np.zeros([N, Nranges], dtype=np.complex64)
+    N = int(an_len/clen) # 100 
+    res = np.zeros([N, Nranges], dtype=np.complex64) # (100,1000)
     r = create_estimation_matrix(code=code, cache=cache, rmax=Nranges)
+    #print ("code shape", code.shape)
     B = r['B']
     #print  (" Bshape ", B.shape)
     spec = np.zeros([N, Nranges], dtype=np.complex64)
@@ -138,14 +139,14 @@ def analyze_prc(
         z = g.read_vector_c81d(idx0 + i * clen, clen, channel)
         z = z - np.median(z)  # remove dc
         #print ("z.shape",z.shape)
-        a = np.dot(B, z)
-        
+        #a = np.dot(B, z)
+	B= np.eye(1000,10000)
         res[i, :] = np.dot(B, z)
         #print ("res.shape",res.shape)
     for i in np.arange(Nranges):
         #spec[:, i] = np.fft.fftshift(np.fft.fft(scipy.signal.blackmanharris(N) * res[:, i]))
         spec[:,i]  = np.fft.fftshift(np.fft.fft( res[:, i]))
-
+    print ("spec.shae",spec.shape)
     #if rfi_rem:
     #    median_spec = np.zeros(N, dtype=np.float32)
     #    for i in np.arange(N):
@@ -251,7 +252,7 @@ if __name__ == '__main__':
 
             M = 10.0 * np.log10((np.abs(res['spec'])))
             plt.pcolormesh(np.transpose(M), vmin=(np.median(M) - 1.0))
-
+	    #plt.pcolormesh(M, vmin=(np.median(M) - 1.0))
             plt.colorbar()
             plt.title(
                 datetime.datetime.utcfromtimestamp(idx / sr).strftime(

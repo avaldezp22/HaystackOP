@@ -1,0 +1,181 @@
+_____________________________________________________
+/
+|       Device: N300-Series Device
+|     _____________________________________________________
+|    /
+|   |       Mboard: ni-n3xx-3168081
+|   |   eeprom_version: 2
+|   |   mpm_version: 3.14.0.0-g655b9b0f
+|   |   pid: 16962
+|   |   product: n310
+|   |   rev: 6
+|   |   rpc_connection: remote
+|   |   serial: 3168081
+|   |   type: n3xx
+|   |   MPM Version: 1.2
+|   |   FPGA Version: 5.3
+|   |   FPGA git hash: 4bc2c6f.clean
+|   |   RFNoC capable: Yes
+|   |
+|   |   Time sources:  internal, external, gpsdo, sfp0
+|   |   Clock sources: external, internal, gpsdo
+|   |   Sensors: temp, gps_locked, ref_locked, fan, gps_tpv, gps_gpgga, gps_sky, gps_time
+|   |     _____________________________________________________
+|   |    /
+|   |   |       RX Dboard: A
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Frontend: 0
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX, RX2, CAL, LOCAL
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 75.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Frontend: 1
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX, RX2, CAL, LOCAL
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 75.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Codec: A
+|   |   |   |   Name: AD9371 Dual ADC
+|   |   |   |   Gain Elements: None
+|   |     _____________________________________________________
+|   |    /
+|   |   |       RX Dboard: B
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Frontend: 0
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX, RX2, CAL, LOCAL
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 75.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Frontend: 1
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX, RX2, CAL, LOCAL
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 75.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       RX Codec: B
+|   |   |   |   Name: AD9371 Dual ADC
+|   |   |   |   Gain Elements: None
+|   |     _____________________________________________________
+|   |    /
+|   |   |       TX Dboard: A
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Frontend: 0
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 65.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Frontend: 1
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 65.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Codec: A
+|   |   |   |   Name: AD9371 Dual DAC
+|   |   |   |   Gain Elements: None
+|   |     _____________________________________________________
+|   |    /
+|   |   |       TX Dboard: B
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Frontend: 0
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 65.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Frontend: 1
+|   |   |   |   Name: Magnesium
+|   |   |   |   Antennas: TX/RX
+|   |   |   |   Sensors: lo_locked, lowband_lo_locked, ad9371_lo_locked
+|   |   |   |   Freq range: 1.000 to 6000.000 MHz
+|   |   |   |   Gain range all: 0.0 to 65.0 step 0.5 dB
+|   |   |   |   Gain range rfic: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range dsa: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Gain range amp: 0.0 to 0.0 step 0.0 dB
+|   |   |   |   Bandwidth range: 20000000.0 to 100000000.0 step 0.0 Hz
+|   |   |   |   Connection Type: IQ
+|   |   |   |   Uses LO offset: No
+|   |   |     _____________________________________________________
+|   |   |    /
+|   |   |   |       TX Codec: B
+|   |   |   |   Name: AD9371 Dual DAC
+|   |   |   |   Gain Elements: None
+|   |     _____________________________________________________
+|   |    /
+|   |   |       RFNoC blocks on this device:
+|   |   |
+|   |   |   * Replay_0
+|   |   |   * Radio_0
+|   |   |   * Radio_1
+|   |   |   * DDC_0
+|   |   |   * DDC_1
+|   |   |   * DUC_0
+|   |   |   * DUC_1
+|   |   |   * FIFO_0
+|   |   |   * FIFO_1
+|   |   |   * FIFO_2
+|   |   |   * FIFO_3

@@ -1,0 +1,27 @@
+Tuesday 09 of July
+Tune up frequency of USRP
+
+1) First start working with USRP N200 and daughterboard Basic Rx
+
+2) Try to user Daughterboard and LO
+
+Wednesday 10  of July
+
+https://files.ettus.com/manual/page_usrp_x3x0.html
+#### Automatic FPGA path, detect image type:
+#### uhd_image_loader --args="type=x300,addr=<IP address>"
+
+$ /home/alex/workarea-uhd/uhd/host/build/examples/test_pps_input --args "addr=172.16.5.189,type=n3xx" --source gpsdo
+
+
+
+INFO] [MPM.Magnesium-0] Re-initializing daughter board. This may take some time.
+[INFO] [MPM.Magnesium-1] Re-initializing daughter board. This may take some time.
+
+Attempt to detect the PPS and set the time...
+
+[INFO] [MULTI_USRP]     1) catch time transition at pps edge
+[INFO] [MULTI_USRP]     2) set times next pps (synchronously)
+
+Success!
+

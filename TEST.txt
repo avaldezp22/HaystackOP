@@ -1,0 +1,7 @@
+USRP USRPN310
+
+
+"master_clock_rate=125.0e6","init_cals=DEFAULT","tracking_cals=TX_QEC|RX_QEC"
+
+print ("Show me the frequency_center",self.uhd_usrp_sink_0.get_center_freq())
+print ("Show me the SAMPLE RATE",self.uhd_usrp_sink_0.get_samp_rate())

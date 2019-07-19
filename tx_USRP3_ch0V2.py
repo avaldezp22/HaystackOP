@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Top Block
-# Generated: Tue Jul 16 15:43:33 2019
+# Title: Tx Usrp3 Ch0V2
+# Generated: Wed Jul 17 10:27:55 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -19,6 +19,7 @@ if __name__ == '__main__':
 from PyQt4 import Qt
 from gnuradio import blocks
 from gnuradio import eng_notation
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio import uhd
 from gnuradio.eng_option import eng_option
@@ -30,12 +31,12 @@ import time
 from gnuradio import qtgui
 
 
-class top_block(gr.top_block, Qt.QWidget):
+class tx_USRP3_ch0V2(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Top Block")
+        gr.top_block.__init__(self, "Tx Usrp3 Ch0V2")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Top Block")
+        self.setWindowTitle("Tx Usrp3 Ch0V2")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -53,7 +54,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "tx_USRP3_ch0V2")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -75,11 +76,17 @@ class top_block(gr.top_block, Qt.QWidget):
         self.uhd_usrp_sink_0.set_clock_rate(125000000, uhd.ALL_MBOARDS)
         self.uhd_usrp_sink_0.set_clock_source('gpsdo', 0)
         self.uhd_usrp_sink_0.set_time_source('gpsdo', 0)
-        self.uhd_usrp_sink_0.set_samp_rate(1000000)
+        self.uhd_usrp_sink_0.set_samp_rate(1250000)
         self.uhd_usrp_sink_0.set_time_unknown_pps(uhd.time_spec())
         self.uhd_usrp_sink_0.set_center_freq(25000000, 0)
         self.uhd_usrp_sink_0.set_gain(30, 0)
         self.uhd_usrp_sink_0.set_antenna('TX/RX', 0)
+        self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
+                interpolation=1250000,
+                decimation=500000,
+                taps=None,
+                fractional_bw=None,
+        )
         self.blocks_vector_source_x_0 = blocks.vector_source_c((numpy.fromfile('/home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin',dtype=numpy.complex64)).tolist(), True, 1, [])
 
 
@@ -87,10 +94,11 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_vector_source_x_0, 0), (self.uhd_usrp_sink_0, 0))
+        self.connect((self.blocks_vector_source_x_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.uhd_usrp_sink_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "tx_USRP3_ch0V2")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -101,7 +109,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
 
 
-def main(top_block_cls=top_block, options=None):
+def main(top_block_cls=tx_USRP3_ch0V2, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

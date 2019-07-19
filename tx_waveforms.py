@@ -56,3 +56,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#python tx_waveforms.py  -f 25e6 -d 30 -w "sine"
+# this line allows me to generate the same signal with channel 0 1 2 3 because
+#python tx_waveforms.py  --args "addr=172.16.5.189" -c 0 1 2 3 -f 40e6 -d 30 -w "sine" 
+# g 35 give 600 mVpp

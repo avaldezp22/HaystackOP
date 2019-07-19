@@ -505,10 +505,14 @@ class Thor(object):
         # calculate longdouble precision/rational sample rate
         # (integer division of clock rate)
         cr = u.get_clock_rate(0)
+        print ("cr get clock_rate", cr)
         srdec = int(round(cr / samplerate))
+        print ("srdec",srdec)
         samplerate_ld = np.longdouble(cr) / srdec
+        print ("samplerate_ld",samplerate_ld)
         op.samplerate = samplerate_ld
         op.samplerate_frac = Fraction(cr).limit_denominator() / srdec
+        print ("op.samplerate_frac",op.samplerate_frac)
 
         # set per-channel options
         # set command time so settings are synced
@@ -662,6 +666,7 @@ class Thor(object):
 
             # get resampling ratio
             ratio = ch_samplerate_frac / op.samplerate_frac
+            print ("ratio",ratio)
             op.resampling_ratios.append(ratio)
 
             # get resampling low-pass filter taps
@@ -694,9 +699,9 @@ class Thor(object):
                 op.channelizer_filter_taps.append(np.zeros(0))
                 op.channelizer_filter_delays.append(0)
 
-    def run(self, starttime=None, endtime=None, duration=None, period=10):
+    def run(self, starttime=None, endtime=None, duration=None, period=1):
         op = self.op
-
+        print ("period",period)
         # window in seconds that we allow for setup time so that we don't
         # issue a start command that's in the past when the flowgraph starts
         SETUP_TIME = 10
@@ -823,7 +828,8 @@ class Thor(object):
         u.set_start_time(
             uhd.time_spec(ct_secs) + uhd.time_spec(ct_frac)
         )
-
+        ########################################################line 831
+        print ("Show me the frequency_center",u.get_center_freq())
         # populate flowgraph one channel at a time
         fg = gr.top_block()
         for ko in range(op.nochs):
@@ -996,7 +1002,7 @@ class Thor(object):
                 is_continuous=True,
                 compression_level=0,
                 checksum=False,
-                marching_periods=True,
+                marching_periods=True,#### ojo cambio
                 stop_on_skipped=op.stop_on_dropped,
                 debug=op.verbose,
             )
@@ -1564,9 +1570,12 @@ def _run_thor(args):
 
     # handle deprecated decimation argument, converting it to sample rate
     if args.decimations is not None:
+	#print ("args.decimations",args.decimations)
         if args.samplerate is None:
             args.samplerate = 1e6
         args.ch_samplerates = [args.samplerate / d for d in args.decimations]
+        #print ("CUANTO VALES EL CH_SAMPLERATES",args.ch_samplerates)
+    print ("CUANTO VALES EL CH_SAMPLERATES",args.ch_samplerates)
     del args.decimations
 
     # handle deprecated sync_source argument, converting it to clock_sources
@@ -1664,3 +1673,19 @@ if __name__ == '__main__':
 
 # command to RX with clock source 10 Mhz :D working
 #python thor.py -m 172.16.5.108 -d "A:A" -y "RX"  -r 1e6 -f 30e6 -datadir /home/alex/data_wgcc/ --nosync   --clock_source 'external'
+
+
+####### LAST UPDATE COMMAND FOR ACQUISITION #######
+# r    1e5 sample rate
+# f   30e6
+# period in programa changed manually  1 second
+# python thor.py -m 172.16.5.108 -d "A:A" -y "RX"  +r 1e5 +t sc16 -f 30e6 -datadir /home/alex/data_pps_clock/ --clock_source 'external' --time_source 'external'
+
+# NEW COMMAND
+# python thor.py -m 172.16.5.108 -d "A:A" -y "RX"  +r 1e5 +t sc16 -f 25.0e6 -datadir /home/alex/data_test_ttuesday09/
+#
+# 100 Mhz/ 2**32   =  390625 / 2**24 the minimun value that i can configurate a USRP with BASIC RX
+# must be multiple of 390.625 Khz = 5**8 Hz using the other value 100 Khz = (2*5)**5
+
+### (2**5)*(5**8)=12.5 Mhz * N , where N is an integerself.
+### that's why we decided to work with 25 Mhz

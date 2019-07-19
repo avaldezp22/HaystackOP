@@ -34,7 +34,7 @@ import scipy.signal
 import matplotlib
 import matplotlib.pyplot as plt
 
-def plot_cts(x,plot_abs=False,plot_draw=True,plot_show=False):  
+def plot_cts(x,plot_abs=False,plot_draw=True,plot_show=False):
     time_vec = np.linspace(0, len(x)-1,num=len(x))
     fig = plt.figure()
     plt.plot(time_vec, np.real(x),"blue")
@@ -48,9 +48,9 @@ def plot_cts(x,plot_abs=False,plot_draw=True,plot_show=False):
     if plot_show:
         plt.show()
 
-        
-        
-##################################################################################    
+
+
+##################################################################################
 def create_pseudo_random_code(clen=10000, seed=0):
     """
     seed is a way of reproducing the random code without
@@ -127,10 +127,12 @@ def analyze_prc(
 
     code = create_pseudo_random_code(clen=clen, seed=station)
     #print ("code_rx", code.shape)
-    N = int(an_len/clen) # 100 
+    N = int(an_len/clen) # 100
     res = np.zeros([N, Nranges], dtype=np.complex64) # (100,1000)
     r = create_estimation_matrix(code=code, cache=cache, rmax=Nranges)
     #print ("code shape", code.shape)
+    print ("seed",station)
+    print ("Code", code[0:10])
     B = r['B']
     #print  (" Bshape ", B.shape)
     spec = np.zeros([N, Nranges], dtype=np.complex64)
@@ -140,7 +142,7 @@ def analyze_prc(
         z = z - np.median(z)  # remove dc
         #print ("z.shape",z.shape)
         #a = np.dot(B, z)
-	B= np.eye(1000,10000)
+	#B= np.eye(1000,10000)
         res[i, :] = np.dot(B, z)
         #print ("res.shape",res.shape)
     for i in np.arange(Nranges):
@@ -195,7 +197,7 @@ if __name__ == '__main__':
         '-n', '--analysis_length', dest='anlen', type=int, default=6000000,
         help='''Analysis length. (default: %(default)s)''',
     )
-    
+
     parser.add_argument(
         '-clen', '--code_length', dest='codelen', type=int, default=10000,
         help='''Code length. (default: %(default)s)''',
@@ -205,7 +207,7 @@ if __name__ == '__main__':
         '-s', '--station', dest='station', type=int, default=0,
         help='''Seed-station. (default: %(default)s)''',
     )
-    
+
     parser.add_argument(
         '-r', '--nranges', type=int, default=1000,
         help='''Number of range gates. (default: %(default)s)''',
@@ -234,7 +236,7 @@ if __name__ == '__main__':
         fidx = np.fromfile(datpath, dtype=np.int)
         if b[0] <= fidx:
             idx = fidx
-            
+
     while True:
         if idx + op.anlen > b[1]:
             print('waiting for more data, sleeping.')
@@ -267,3 +269,11 @@ if __name__ == '__main__':
             print('IOError, skipping.')
         idx = idx + op.anlen
         idx.tofile(datpath)
+
+
+#python prc_analyze.py /home/alex/data_wgcc -c ch0  -n 1000000
+
+
+#### LAST UPDATE  PLOTEO ####
+
+# python prc_analyze.py /home/alex/data_pps_clock -c ch0  -n 1000000 -s 0

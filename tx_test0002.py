@@ -129,6 +129,11 @@ def read_timing_mode_waveform(mode_ini, iq_dir=None):
 
     """
     # make sure mode_ini exists as named, or add extension
+
+
+    #for ch_num in range(len(nchs)):
+    #    print (ch_num)
+
     mode_ini = os.path.abspath(mode_ini)
     if not os.path.isfile(mode_ini):
         mode_ini = mode_ini + '.iq.ini'
@@ -213,7 +218,7 @@ class Tx(object):
         del options['self']
         op = self._parse_options(**options)
         self.op = op
-
+        print ("LLEGUE AQUI  QUE PASO")
         if op.test_settings:
             # test usrp device settings, release device when done
             if op.verbose:
@@ -388,10 +393,13 @@ class Tx(object):
         sr_rat = Fraction(cr).limit_denominator() / srdec
         op.samplerate_num = sr_rat.numerator
         op.samplerate_den = sr_rat.denominator
+        print ("op.samplerate_num",op.samplerate_num)
+        print ("op.samplerate_den",op.samplerate_den)
 
+        time.sleep(0.5)
         # set per-channel options
         # set command time so settings are synced
-        COMMAND_DELAY = 0.1####### COMMENT 0.2
+        COMMAND_DELAY = 0.2####### COMMENT 0.2
         cmd_time = u.get_time_now() + uhd.time_spec(COMMAND_DELAY)
         u.set_command_time(cmd_time, uhd.ALL_MBOARDS)
         for ch_num in range(op.nchs):
@@ -419,6 +427,7 @@ class Tx(object):
                     raise ValueError(errstr)
                 u.set_lo_export_enabled(lo_export, uhd.ALL_LOS, ch_num)
             # center frequency and tuning offset
+            print ("LO_OFFSETS",op.lo_offsets[ch_num])
             tune_res = u.set_center_freq(
                 uhd.tune_request(
                     op.centerfreqs[ch_num], op.lo_offsets[ch_num],
@@ -426,6 +435,9 @@ class Tx(object):
                 ),
                 ch_num,
             )
+            center=u.get_center_freq()
+            print ("center freq",center)
+            print ("tune_res",tune_res.actual_rf_freq,tune_res.actual_dsp_freq)
             # store actual values from tune result
             op.centerfreqs[ch_num] = (
                 tune_res.actual_rf_freq + tune_res.actual_dsp_freq
@@ -433,6 +445,8 @@ class Tx(object):
             op.lo_offsets[ch_num] = -tune_res.actual_dsp_freq
             # dc offset
             dc_offset = op.dc_offsets[ch_num]
+            print ("######################333")
+            print ("EXISTE EL DC_OFFSET",dc_offset)
             if dc_offset is not None:
                 u.set_dc_offset(dc_offset, ch_num)
             # iq balance
@@ -517,7 +531,7 @@ class Tx(object):
         print ("period",period)
         # window in seconds that we allow for setup time so that we don't
         # issue a start command that's in the past when the flowgraph starts
-        SETUP_TIME = 20
+        SETUP_TIME = 10
 
         # print current time and NTP status
         if op.verbose and sys.platform.startswith('linux'):
@@ -634,15 +648,17 @@ class Tx(object):
         fg = gr.top_block()
         for k in range(op.nchs):
             mult_k = op.amplitudes[k]*np.exp(1j*op.phases[k])
-            if op.waveform is not None:
-                waveform_k = mult_k*op.waveform
+            if op.waveform[k] is not None:
+                waveform_k = mult_k*op.waveform[k]
                 src_k = blocks.vector_source_c(
                     waveform_k.tolist(), repeat=True,
                 )
             else:
+                print ("33#######TONE ACTIVATE##########33")
                 src_k = analog.sig_source_c(
                     0, analog.GR_CONST_WAVE, 0, 0, mult_k,
                 )
+
             fg.connect(src_k, (u, k))
 
         # start the flowgraph once we are near the launch time
@@ -765,7 +781,7 @@ if __name__ == '__main__':
 
     wavgroup = parser.add_argument_group(title='waveform')
     wavgroup.add_argument(
-        'file', nargs='?', default=None,
+        '--file',dest='file', nargs='+', default=None,
         help='''INI file specifying the waveform timing mode or complex64
                 binary file giving the waveform directly.''',
     )
@@ -933,6 +949,7 @@ if __name__ == '__main__':
         op.stream_args = [
             '{0}={1}'.format(k, v) for k, v in stream_args_dict.items()
         ]
+    print ("op.tune_args",op.tune_args)
     if op.tune_args is not None:
         try:
             tune_args_dict = dict([a.split('=') for a in op.tune_args])
@@ -948,27 +965,54 @@ if __name__ == '__main__':
     if op.starttime is None:
         op.test_settings = False
 
+
     options = {k: v for k, v in op._get_kwargs() if v is not None}
-    fpath = options.pop('file')
+    #print ("options",options)
+    options.pop('file')
+    #print ("fpath",fpath)
     iq_dir = options.pop('iq_dir', None)
     tone = options.pop('tone', False)
+    tmp_subdevs = op.subdevs
+    for sd in tmp_subdevs:
+        sds = sd.split()
+    nchs=len(sds)
+    #print ("subdevs",nchs)
+
     runopts = {
         k: options.pop(k) for k in list(options.keys())
         if k in ('starttime', 'endtime', 'duration', 'period')
     }
 
     # read waveform
+    waveform=[]
+    print ("OPTONE",op.tone)
     if op.tone:
-        options['waveform'] = None
+        for ch_num in range(nchs):
+            waveform.append(None)
     else:
-        try:
-            tm_dict = read_timing_mode_waveform(fpath, iq_dir=iq_dir)
-            # use tm_dict as default options, overriding with command line
-            options['waveform'] = tm_dict['waveform']
-            options.setdefault('samplerate', tm_dict['samplerate'])
-            options.setdefault('centerfreqs', [tm_dict['center_freq']])
-        except ValueError:
-            options['waveform'] = np.fromfile(op.file, dtype=np.complex64)
+        #print (len(op.file))
+        if len(op.file) == 1:
+            file=op.file[0]
+            if len(op.file)<nchs:
+                op.file=[]
+                for i in range(nchs):
+                    op.file.append(file)
+        if len(op.file)<nchs:
+            raise ValueError('Must specify  more waveform file, the same quantity of channels or just one code if not  code use "--tone".')
+
+        #print ("hello",op.file)
+        for ch_num in range(nchs):
+            filepath=op.file[ch_num]
+            try:
+                tm_dict = read_timing_mode_waveform(filepath, iq_dir=iq_dir)
+                # use tm_dict as default options, overriding with command line
+                options['waveform'] = tm_dict['waveform']
+                options.setdefault('samplerate', tm_dict['samplerate'])
+                options.setdefault('centerfreqs', [tm_dict['center_freq']])
+            except ValueError:
+                waveform.append(np.fromfile(op.file[ch_num], dtype=np.complex64))
+
+    options['waveform']=waveform
 
     tx = Tx(**options)
     tx.run(**runopts)
@@ -998,3 +1042,13 @@ if __name__ == '__main__':
 # and also we need to calibrate USRP RX Values that match perfectly are mulplte of 12.5 Mhz.
 # LAST COMMAND USRPN310
 ###python tx_test0001.py -m 172.16.5.189  -r 1e6 -f 12.5e6,25e6 -d "A:0 A:1" -y "TX/RX" -G  0.5,0.8 -l 1  --starttime 2019-07-02T13:05:00Z --duration 100 --sync_source gpsdo --duration 100 /home/alex/digital_rf/python/examples/sounder/waveforms/const.bin  -T "mode_n=integer,int_n_step=100e3"
+
+#LAST UPDATE MORE STABLE COMMAND
+# python tx_test0002.py -m 172.16.5.189  -r 1e6 -f 40e6,20e6 -d "A:0 B:0" -y "TX/RX" -G  0.5,0.5  -l 1  --starttime 2019-07-10T13:05:00Z --duration 100 --sync_source "gpsdo"  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin /home/alex/HaystackOP/waveforms/code-l10000-b10-000002.bin
+
+
+#last test
+#python tx_test0002.py -m 172.16.5.189  -r 1e6 -f 25e6,25e6,25e6 -d "A:0 B:0 B:1" -y "TX/RX" -G  1,1,1 -g 25,25,30 -l 1  --starttime 2019-07-10T13:05:00Z --duration 240 --sync_source "gpsdo"  --file /home/alex/digital_rf/python/examples/sounder/waveforms/const.bin
+
+#more test
+#python tx.py -m 172.16.5.189  -r 1e6 -f 25.0e6 -d "A:0" -y "TX/RX" -G 1 -g 33 -b 40e6 -l 1  --starttime 2019-07-10T13:05:00Z --duration 240 --sync_source "external"  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin   -T "mode_n=integer,int_n_step=100e3"

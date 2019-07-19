@@ -1,0 +1,4 @@
+Today 08x
+1) Increase sample rate in mesure with generator or decrease bandwidth.
+2) Mesure with tx_test..py 1 seg.
+3) Acquire with thor.py decimation by 10.

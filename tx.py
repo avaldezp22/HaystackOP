@@ -381,7 +381,6 @@ class Tx(object):
         # calculate longdouble precision sample rate
         # (integer division of clock rate)
         cr = u.get_clock_rate()
-        print ("clockrate",cr)
         srdec = int(round(cr / samplerate))
         samplerate_ld = np.longdouble(cr) / srdec
         op.samplerate = samplerate_ld
@@ -391,13 +390,12 @@ class Tx(object):
 
         # set per-channel options
         # set command time so settings are synced
-        COMMAND_DELAY = 0.1####### COMMENT 0.2
+        COMMAND_DELAY = 0.2
         cmd_time = u.get_time_now() + uhd.time_spec(COMMAND_DELAY)
         u.set_command_time(cmd_time, uhd.ALL_MBOARDS)
         for ch_num in range(op.nchs):
             # local oscillator sharing settings
             lo_source = op.lo_sources[ch_num]
-            print ("lo_source",lo_source)
             if lo_source:
                 try:
                     u.set_lo_source(lo_source, uhd.ALL_LOS, ch_num)
@@ -409,7 +407,6 @@ class Tx(object):
                     ).format(lo_source, u.get_lo_sources(uhd.ALL_LOS, ch_num))
                     raise ValueError(errstr)
             lo_export = op.lo_exports[ch_num]
-            print ("lo_export",lo_export)
             if lo_export is not None:
                 if not lo_source:
                     errstr = (
@@ -513,11 +510,11 @@ class Tx(object):
         return u
 
     def run(self, starttime=None, endtime=None, duration=None, period=1):
-        op = self.op #print (op.period)
-        print ("period",period)
+        op = self.op
+
         # window in seconds that we allow for setup time so that we don't
         # issue a start command that's in the past when the flowgraph starts
-        SETUP_TIME = 20
+        SETUP_TIME = 10
 
         # print current time and NTP status
         if op.verbose and sys.platform.startswith('linux'):
@@ -595,8 +592,6 @@ class Tx(object):
             # then sets the time for the subsequent pps
             # (at time math.ceil(tt) + 1.0)
             u.set_time_unknown_pps(uhd.time_spec(math.ceil(tt) + 1.0))
-            ################LINEA 594 MY RISK
-            #u.set_time_now(uhd.time_spec(tt), uhd.ALL_MBOARDS)
             # wait for time registers to be in known state
             time.sleep(math.ceil(tt) - tt + 1.0)
         else:
@@ -628,8 +623,7 @@ class Tx(object):
         u.set_start_time(
             uhd.time_spec(ct_secs) + uhd.time_spec(ct_frac)
         )
-        ########################################################line 631
-        print ("Show me the frequency_center",u.get_center_freq())
+
         # populate flowgraph one channel at a time
         fg = gr.top_block()
         for k in range(op.nchs):
@@ -972,29 +966,3 @@ if __name__ == '__main__':
 
     tx = Tx(**options)
     tx.run(**runopts)
-
-
-#use this command
-# python tx_test0001.py -d A:0 -f 30e6 -r 1e6 -y "TX/RX" -G 0.5 -P 0 -b 0 -l 1  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin --starttime 2019-07-02T13:05:00Z --duration 100 --nosync
-
-
-# -p period debe ser 1
-#G Gain  0.5   500 mVpp
-
-#######
-####### LAST UPDATE COMMAND FOR TRANSMISION #######
-# r 1e6
-# f 30e6
-# repition changed manually 1 second
-# python tx_test0001.py -d A:0 -f 30e6 -r 1e6 -y "TX/RX" -G 0.6 -P 0 -b 0 -l 1  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin --starttime 2019-07-08T13:05:00Z --duration 100
-
-
-
-
-#UPDATE COMMAND
-# python tx_test0001.py -d A:0 -f 25.0e6 -r 1e6 -y "TX/RX" -G 0.6 -P 0 -b 0 -l 1  /home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin --starttime 2019-07-08T13:05:00Z --duration 100 -T "mode_n=integer,int_n_step=100e3"
-
-#CONFIGURATION FOR UBX-40 WE CAN CONFIGURATE USRP FREQUENCY Multiple OF 100Khz
-# and also we need to calibrate USRP RX Values that match perfectly are mulplte of 12.5 Mhz.
-# LAST COMMAND USRPN310
-###python tx_test0001.py -m 172.16.5.189  -r 1e6 -f 12.5e6,25e6 -d "A:0 A:1" -y "TX/RX" -G  0.5,0.8 -l 1  --starttime 2019-07-02T13:05:00Z --duration 100 --sync_source gpsdo --duration 100 /home/alex/digital_rf/python/examples/sounder/waveforms/const.bin  -T "mode_n=integer,int_n_step=100e3"

@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Tx Usrp3 Ch0
-# Generated: Thu Jul 18 16:45:27 2019
+# Generated: Fri Jul 19 12:48:10 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -58,11 +58,6 @@ class tx_USRP3_ch0(gr.top_block, Qt.QWidget):
 
 
         ##################################################
-        # Variables
-        ##################################################
-        self.samp_rate = samp_rate = 32000
-
-        ##################################################
         # Blocks
         ##################################################
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
@@ -80,29 +75,21 @@ class tx_USRP3_ch0(gr.top_block, Qt.QWidget):
         self.uhd_usrp_sink_0.set_center_freq(25000000, 0)
         self.uhd_usrp_sink_0.set_gain(30, 0)
         self.uhd_usrp_sink_0.set_antenna('TX/RX', 0)
-        self.blocks_vector_source_x_0_0 = blocks.vector_source_c((numpy.fromfile('/home/alex/HaystackOP/waveforms/code-l10000-b10-000001.bin',dtype=numpy.complex64)).tolist(), True, 1, [])
         self.blocks_vector_source_x_0 = blocks.vector_source_c((numpy.fromfile('/home/alex/digital_rf/python/examples/sounder/waveforms/code-l10000-b10-000000.bin',dtype=numpy.complex64)).tolist(), True, 1, [])
-        self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
 
+        print ("Show me the frequency_center",self.uhd_usrp_sink_0.get_center_freq())
+        print ("Show me the SAMPLE RATE",self.uhd_usrp_sink_0.get_samp_rate())
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_multiply_xx_0, 0), (self.uhd_usrp_sink_0, 0))
-        self.connect((self.blocks_vector_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
-        self.connect((self.blocks_vector_source_x_0_0, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.blocks_vector_source_x_0, 0), (self.uhd_usrp_sink_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "tx_USRP3_ch0")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
-
-    def get_samp_rate(self):
-        return self.samp_rate
-
-    def set_samp_rate(self, samp_rate):
-        self.samp_rate = samp_rate
 
 
 def main(top_block_cls=tx_USRP3_ch0, options=None):

@@ -132,7 +132,7 @@ def analyze_prc(
     r = create_estimation_matrix(code=code, cache=cache, rmax=Nranges)
     #print ("code shape", code.shape)
     print ("seed",station)
-    print ("Code", code[0:10])
+    #print ("Code", code[0:10])
     B = r['B']
     #print  (" Bshape ", B.shape)
     spec = np.zeros([N, Nranges], dtype=np.complex64)
@@ -146,8 +146,8 @@ def analyze_prc(
         res[i, :] = np.dot(B, z)
         #print ("res.shape",res.shape)
     for i in np.arange(Nranges):
-        #spec[:, i] = np.fft.fftshift(np.fft.fft(scipy.signal.blackmanharris(N) * res[:, i]))
-        spec[:,i]  = np.fft.fftshift(np.fft.fft( res[:, i]))
+        spec[:, i] = np.fft.fftshift(np.fft.fft(scipy.signal.blackmanharris(N) * res[:, i]))
+        #spec[:,i]  = np.fft.fftshift(np.fft.fft( res[:, i]))
     print ("spec.shae",spec.shape)
     #if rfi_rem:
     #    median_spec = np.zeros(N, dtype=np.float32)
@@ -253,6 +253,8 @@ if __name__ == '__main__':
             plt.clf()
 
             M = 10.0 * np.log10((np.abs(res['spec'])))
+            print (("M.shape"),M.shape)
+            #time.sleep(20)
             plt.pcolormesh(np.transpose(M), vmin=(np.median(M) - 1.0))
 	    #plt.pcolormesh(M, vmin=(np.median(M) - 1.0))
             plt.colorbar()

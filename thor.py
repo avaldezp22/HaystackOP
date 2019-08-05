@@ -1689,3 +1689,6 @@ if __name__ == '__main__':
 
 ### (2**5)*(5**8)=12.5 Mhz * N , where N is an integerself.
 ### that's why we decided to work with 25 Mhz
+
+#sousy freq 53497506.119310856
+#python2.7 thor.py -m 192.168.20.2 -d "A:A" -y "RX" -r 1e6 -f 53497506.119310856 -datadir /media/soporte/DATA1  --clock_source 'external' --time_source 'external' --clock_rate 200e6

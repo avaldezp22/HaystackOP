@@ -1,0 +1,42 @@
+MANUAL SCHAIN
+PC- 3104
+1) Instalar los siguientes paquetes y librerías de python.
+$ sudo apt-get install python-pip python-dev gfortran libpng-dev freetype* libblas-dev liblapack-dev libatlas-base-dev python-qt4 python-tk libssl-dev libhdf5-dev
+
+2) Crear un entorno virtual para evitar problemas de dependencias con la instalación original o por defecto del sistema operativo.
+$ virtualenv -p /usr/bin/python2.7 test_project
+$ source /home/alex/test_project/bin/activate 
+Instalar signal chain:
+$ sudo apt-get install git
+$ git clone http://jro-dev.igp.gob.pe/rhodecode/schain
+$ cd schain
+$ pip install numpy
+$ pip install  -e  ./
+$ pip install mako
+$ pip install packaging
+$ cd ..
+$ git clone https://github.com/MITHaystack/digital_rf
+$ cd digital_rf
+$ mkdir build 
+$ cd build
+$ cmake ..
+$ make
+$ sudo make install
+
+
+3) Instalación del PyQt4 y sib para el entorno gráfico.En el directorio /home/alex/schain esta el link.
+$ ./link_PyQt4.sh
+Ubicar los scripts:
+$ cd /home/alex/schain/schainpy/scripts
+Ubicar en schain_workspace
+$ cd /home/alex/schain_workspace/
+
+ECLIPSE
+Instalar JAVA
+https://websiteforstudents.com/how-to-install-eclipse-oxygen-ide-on-ubuntu-167-04-17-10-18-04/
+2) Descargar  ECLIPSE
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2018-12/R/eclipse-cpp-2018-12-R-linux-gtk-x86_64.tar.gz
+
+3) Instalar PYDEV
+
+http://www.pydev.org/manual_101_install.html

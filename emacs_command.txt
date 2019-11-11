@@ -68,6 +68,11 @@ Add line numbers:
 
 Alt+x linum-mode
 
+Change theme color
 
+sudo apt-get install emacs-goodies-el
+
+M-x colot-theme-select
+Alt 
 
 

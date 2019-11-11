@@ -25,7 +25,13 @@ Copy and delete command
 
 [ CTRL ] +  #delete the rest of the current line
 
-[ CTRL ] + w#  copy the line but first we net to put [ CTRL ] SHIFT + [space bar] then i could select  moving forward with the button arrow.
+[ TAB] + -> # Select with flecha
+
+[ ALT ] + w #Copy
+
+[ CTRL ] + y # paste
+ 
+[ CTRL ] + w #copy the line but first we net to put [ CTRL ] SHIFT + [space bar] then i could select  moving forward with the button arrow.
 
 [ CTRL ] + y # paste the line copied before.
 
@@ -57,7 +63,7 @@ For search words in buffer:
 
 [ALT] +s +w + word # to search for a word
 
-[ CTRL ] + s # isearch forward
+[ CTRL ] + s # isearch forward Buscar hacia adelante
 
 [CTRL] + s # jump to next occurrence
 

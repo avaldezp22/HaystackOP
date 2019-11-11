@@ -1,5 +1,6 @@
-######## List of commands for use emacs #####################
-
+#########################################################
+######## List of commands for use emacs #################
+#########################################################
 Put in practice this amazing editor...! :)
 
 [ CTRL ] + x + 1
@@ -16,7 +17,9 @@ Create windows or folders like terminals to work, if u r editing some text it co
 
 [ CTRL ] + x + u # command to undo operation.
 
+###########################
 Copy and delete command
+###########################
 
 [ CTRL ] + d #delete character under cursor
 
@@ -31,9 +34,9 @@ Copy and delete command
 [ CTRL ] + x + [ CTRL ]  +s # save buffer or file edition
 
 [ CTRL ] + x + [ CTRL ]  +w # prompts for a new filename and writes the buffer
-
+######################
 Cursor/screen
-
+######################
 [ CTRL ] + a # go to the begining of line
 
 [ CTRL ] + e # g to end of line
@@ -48,8 +51,9 @@ Cursor/screen
 
 [ CTRL ] + v # scroll filel forwrd by one screefull
 
-
+#############################
 For search words in buffer:
+#############################
 
 [ALT] +s +w + word # to search for a word
 
@@ -63,16 +67,17 @@ For search words in buffer:
 
 [CTRL]+ x + h # Select all the contain
 
-
+########################################
 Add line numbers:
-
+########################################
 Alt+x linum-mode
 
+########################################
 Change theme color
-
+########################################
 sudo apt-get install emacs-goodies-el
 
-M-x colot-theme-select
+M-x color-theme-select
 Alt 
 
 

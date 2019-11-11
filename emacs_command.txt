@@ -64,6 +64,9 @@ For search words in buffer:
 [CTRL]+ x + h # Select all the contain
 
 
+Add line numbers:
+
+Alt+x linum-mode
 
 
 

@@ -68,7 +68,10 @@ while(True):
 
         meta='PE'
         filex="%s%4.4d%3.3d%10.4d%s"%(meta,timetuple.tm_year,timetuple.tm_yday,epoc,ext)
-
+        filename = os.path.join(fullpath,filex)
+        fp = h5py.File(filename,'w')
+        dset = f.create_dataset("pedestal", data=pedestal_array)
+        fp.close()
 
         time.sleep(4)
     #print (topic,"AE°:",ang_elev,"AA°",ang_azi,"T",seconds)

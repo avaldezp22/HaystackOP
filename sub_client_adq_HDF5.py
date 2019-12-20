@@ -2,6 +2,10 @@ import numpy
 import sys
 import zmq
 import time
+import h5py
+
+path="/home/soporte/Downloads"
+ext=".hdf5"
 
 port ="5556"
 if len(sys.argv)>1:
@@ -46,13 +50,26 @@ while(True):
     time0.append(seconds)
     count +=1
     print (count,topic,"AE°:",ang_elev,"AA°",ang_azi,"T",seconds)
-    if count == 36000:
+    if count == 6000:
+        timetuple=time.localtime()
+        epoc = time.mktime(timetuple)
+        fullpath = path + ("/" if path[-1]!="/" else "")
+
+
+        if not os.path.exists(fullpath):
+            os.mkdir(fullpath)
+
         pedestal_array=numpy.array([azi,elev,time0])
         count=0
         azi= []
         elev=[]
         time0=[]
         print(pedestal_array[0][0][0])
+
+        meta='PE'
+        filex="%s%4.4d%3.3d%10.4d%s"%(meta,timetuple.tm_year,timetuple.tm_yday,epoc,ext)
+
+
         time.sleep(4)
     #print (topic,"AE°:",ang_elev,"AA°",ang_azi,"T",seconds)
 

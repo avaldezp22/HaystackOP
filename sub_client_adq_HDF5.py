@@ -3,8 +3,9 @@ import sys
 import zmq
 import time
 import h5py
+import os
 
-path="/home/soporte/Downloads"
+path="/home/soporte/Downloads/pedestal"
 ext=".hdf5"
 
 port ="5556"
@@ -49,7 +50,7 @@ while(True):
     elev.append(ang_elev)
     time0.append(seconds)
     count +=1
-    print (count,topic,"AE°:",ang_elev,"AA°",ang_azi,"T",seconds)
+    #print (count,topic,"AE°:",ang_elev,"AA°",ang_azi,"T",seconds)
     if count == 6000:
         timetuple=time.localtime()
         epoc = time.mktime(timetuple)
@@ -59,18 +60,23 @@ while(True):
         if not os.path.exists(fullpath):
             os.mkdir(fullpath)
 
+        azi_array  = numpy.array(azi)
+        elev_array = numpy.array(elev)
+        time0_array= numpy.array(time0)
         pedestal_array=numpy.array([azi,elev,time0])
         count=0
         azi= []
         elev=[]
         time0=[]
-        print(pedestal_array[0][0][0])
+        print(pedestal_array[0])
+        print(pedestal_array[1])
 
         meta='PE'
         filex="%s%4.4d%3.3d%10.4d%s"%(meta,timetuple.tm_year,timetuple.tm_yday,epoc,ext)
         filename = os.path.join(fullpath,filex)
         fp = h5py.File(filename,'w')
-        dset = f.create_dataset("pedestal", data=pedestal_array)
+        print("Escribiendo HDF5...")
+        dset = fp.create_dataset("pedestal", data=pedestal_array)
         fp.close()
 
         time.sleep(4)

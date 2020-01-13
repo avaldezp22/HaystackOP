@@ -18,7 +18,7 @@ def str2bool(v):
 
 def codigo(args):
     code_list=[]
-    PATH="/home/alex/digital_rf/python/examples/sounder/waveforms/"
+    PATH="/home/soporte/HaystackOP/"
     os.chdir(PATH)
     for file in glob.glob("*.bin"):
         code_list.append(file)

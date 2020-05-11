@@ -5,12 +5,12 @@ import os
 import matplotlib.pyplot as pl
 import wradlib as wrl
 import numpy as np
-
+pl.switch_backend("TKAgg")
 #filename = wrl.util.get_wradlib_data_file('dx/raa00-dx_10908-0806021655-fbg---bin.gz')
 
 
 validFilelist = []
-path= '/home/soporte/Downloads/2019-12-29_JC/'
+path= '/home/alex/Downloads/2019-12-29/'
 fileList= os.listdir(path)
 for thisFile in fileList:
     if (os.path.splitext(thisFile)[0][-4:] != 'dBuZ'):

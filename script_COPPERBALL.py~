@@ -1,0 +1,24 @@
+import os
+import sys
+import sys
+
+from schainpy.controller import Project
+
+controllerObj = Project()
+desc = ''
+controllerObj.setup(id='191', name='test01', description=desc)
+
+
+writeUnitConfObj = controllerObj.addWriteUnit(datatype='Hdf5Writer',
+                                              racpfile='/home/alex/Downloads'
+                                              acquisition_type='copperball'
+                                             )
+
+procUnitConfObj0 = controllerObj.addProcUnit(datatype='ParamProc', inputId=readUnitConfObj.getId())
+
+opObj11 = procUnitConfObj0.addOperation(name='Scope', optype='external')
+opObj11.addParameter(name='id', value='121', format='int')
+opObj11.addParameter(name='wintitle', value='Scope', format='str')
+
+
+controllerObj.start()

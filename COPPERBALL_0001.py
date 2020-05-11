@@ -1,0 +1,91 @@
+print("CREACION DEL SCRIPT COPPERBALL")
+import numpy
+import math
+####################################
+EXPERIMENT_TYPE=EXP_HDF5_DATA
+EXPERIMENT_NAME=COPPERBALL
+HEADER_VERSION =1105
+##########Radar Controller Parameter ##########
+IPP=1000
+NTX=150
+TXA=40
+TXB=50
+Pulse_selection_TR=A
+Code_Type=COMPLEMENTARY_CODE_32
+Number_of_COdes=2
+Code_Width=32
+COD(0)=11101101111000101110110100011101
+COD(1)=11101101111000100001001011100010
+L4_REFERENCE=TXA
+L6_Number_Of_Portions=1
+PORTION_BEGIN(0)=200
+PORTION_END(0)=210
+L6_Portiones_IPP_Periodic=NO
+Number_of_Taus=1
+TAU(0)=250
+Sampling_Windows=1
+H0(0)=70
+NSA(0)=200
+DH(0)=1.25
+L7_REFERENCE=TXA
+SAMPLING_REFERENCE=MIDDLE_OF_ FIRST SUB-BAUD
+RELOJ=1.2
+TR_AFTER=1
+WINDOW__IN_LIN_5&6=NO
+#############System Parameters
+Number_of_Cards=3
+Card(0)=0
+Card(1)=1
+Card(2)=2
+Antennas_Names=3
+AntennaName(0)=0
+AntennaName(1)=1
+AntennaName(2)=2
+RAW_DATA_DIRECTORY="/home/alex/Downloads/wr_data"
+CREATE_DIRECTORY_PER_DAY=YES
+INCLUDE_EXPNAME_IN_DIRECTORY=NO
+#############System Parameters
+ADC_Resolution  = 8
+PCI_DIO_BusWidth=32
+RAW_DATA_BLOCKS =120
+#############Process Parameters
+DATATYPE=SHORT
+DATA_ARRANGE=CONTIGUOS_CH
+COHERENT_INTEGRATION_STRIDE=1
+###############################
+ACQUIRED_PRODILES=300
+PROFILES_PER_BLOCK=300
+###############################
+BEGIN_ON_START=NO
+BEGIN_TIME=07:00
+END_TIME=18:00
+GENERATE_ACQUISITION_LINK=YES
+VIEW_RAW_DATA=ES
+REFRESH_RATE=1
+################################
+SEND_STATUS_TO_FTP=NO
+SAVE_STATUS_AND_BLOCK=YES
+FTP_INTERAL=60
+GENERATE_RTI=NO
+SEND_RTI_AND_BLOCK=NO
+################################
+COMPORT_CONFIG=Com2 CBR_9600 TWOSTOPBITS NOPARITY
+JAM_CONFIGURE_FILE=dmasg_pprofiles_pch_64_pdigi_6clk.jam
+ACQUISITION_SYSTEM=JARS
+########### JARS CONFIGURATION PARAMETERS
+JARS_FILTER=F120KHZ.jars
+MARK_WIDTH=2
+GENERATE_OWN_SAMPLING_WINDOW=NO
+SAVE_DATA=YES
+############RC SEQUENCES
+RC_SEQ1=255.96
+RC_STOP_SEQUENCE=255.0
+RC_START_SEQUENCE=255.32
+
+
+sample_len = 10000
+array_len  = numpy.ones(sample_len)
+phases = numpy.array(numpy.exp(1.0j*2.0* math.pi*1*array_len),dtype= numpy.complex64)
+
+print("Show me phases",phases)
+

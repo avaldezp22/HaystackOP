@@ -1,0 +1,163 @@
+------------------------------------
+Durante la ejecucion del programa
+------------------------------------
+
+-rf "C\Experiments\JASMET\2018_12_60MHz\dia\dia_mod.racp" --cbsim
+
+Include:
++ExperimetParameters
++MemoryManager
++Exceptio
++iostream
++ArgProcessor
+Aqui es donde se declaran los atributos y observamos el parametro cbsim.
+     	- Parameter EnableCooperSimulation = true
+	- currentDataformat = HPCh_
+	  		      - Enable   &cooperball
++signal
+
+
+IDENTIFICACION DEL PROGRAMA main.cpp
+
+void terminate
+void MyCallbackkFunction
+void Process_Finish
+int main
+{
+	#prioridad
+	myprocess
+	setpriority
+	mythread
+	setthread
+	ippStaticINit
+	#librerias estaticas
+	ippStaticInit
+	#puntero que servira como interfase para la clase que controla el dispositivo
+	################################################
+	1----------------------AQUI ARRANCA ARGPROCESSOR
+	################################################
+	ArgProcessor #aqui hay una clase.
+	ArgProcess.jro_arguments--->
+	try:
+		#ingresa parametros y memoria a process manager(RdpToolsBeta)
+		MyProcess.GetExtParameters(&MyParameters,&MyMemManager)
+		MyProcess.initProcessing
+		MyHeader.GetExpParameters
+		pAcquisitionManager-- jro_MatchParameters
+		pAcquisitionManager-- jro_AssingMemory( MyMemManager, MyCallbackFunction)
+		#INICIA ADQUISICION
+		pAcquisitionManager--> jro_InitAcquisition()
+
+		# si apretamos q termina
+} 
+
+
+void MyCalLbackFunction
+{
+		# Ejecucion de la funcion de procesamiento de RDp ToolsBeta
+		MyProcess.ProcessData
+			MyParameters.SaveData
+				MyHeader.SaveData
+				MyHeader.SendData
+}
+void Process_Finish{
+     pAcquisitionManager-> jro_StopAcquisition
+}
+
+
+###################################################################################
+ArgProcessor::jro_arguments
+		MyParameters.ReadRACPFileParameters
+		íf --ec214 --ec314 --jars --rex --cbsim
+		   MyParameters.EnableCooperSimulation = true
+		   Myparameters.currentDataFormat      = HPCh_
+
+		 if MyParameters.EnableEchotek214
+		 else if MyParameters.EnableJARS
+		      (*MyAcqMan) = &JARSControl
+		 else if MyParameters.EnableCooperSimulaton
+		      (*MyAcqMan) = &cooperball
+		 else if MyParameters.EnableJARS
+###################################################################################
+JARSControl::_JARSControl
+*JARSControl CreateTasks
+*JARSControl::jro_MatchParameters
+
+###################################################################################
+
+COOPERBALL
+DONDE QUEREMOS QUE APAREZCA EL COOPERBALL
+H0  0.0 last heigth 1.0 ventana de muestreo
+0 corresponde a una fase de 0rad y 1 a una fase de 2pi rad
+PHASE_FACTOR 0.2  // 2pi*0.125 <> 45ª
+
+
+copperball_AcquisitionManager
+copperball_ jro_MatchParameters
+copperball_ jro_AssignMemory
+copperball_ jro_InitAcquisition
+	    incIntfactor = 1
+	    nProfilesperBlock
+	    nFFTPoints
+	    incIntfactor = MyGPParam.FixPP.m_nIncoherentIntegrations.incIntfactor
+	    timeperblock = MyGPParam.FixPP.m_nCoherentIntegratios*incIntfactor*0.9/150 + 0-5
+	    ## para cada canal
+	    prof_gen
+	    m_nReference= int()
+	    BaudWidth
+	    init_pulse() ######
+	    hthread_simulation = CreateThread(Nulll,0,RunSimulation,this,0,NULL)
+	    SsetThreadPriority()
+
+copperball jro_StopAcquisition
+
+copperballjro_GenerateBlockOfData
+	InBuffer  = (Ipp16sc*)m_AcqBuffer
+	Seed
+	Seed_Time
+	for ch++
+	    for profile++
+	      #por cada perfil
+	      srand (seed_time.LowPart)
+	      Seed= (unsigned int)rand()
+	      #############SUMA DE NOISE, MUESTRAS, DC , DESVIACION ESTANDAR###############
+	      ippsRandGauss_Direct_16s(noise,m_nsamples,DC_LEVEL,stdev,&seed)
+	      
+	      ippsCopy_16s(pulse[profile%num_codes],&Rebuff[m_nReference],pulse_size)
+	      ippsCopy_16s(pulse[profile%num_codes],&Imbuff[m_nReference],pulse_Size)
+	      
+	      ippsAdd_16s_I(Noise,Rebuff,MyExpParam-> MySystemParam.m_nSamples)
+              ippsAdd_16s_I(Noise,Imbuff,MyExpParam-> MySystemParam.m_nSamples)
+	      ########################### 
+	      ippsMulc_16s_I(Ipp16s(cos(fAngle)*5),&Rebuff[m_nReference],pulse_size)
+	      ippsMulc_16s_I(Ipp16s(sin(fAngle)*5),&Rebuff[m_nReference],pulse_size)
+	      ######################
+	      ippsRealToCplx_16s(Rebuff,Imbuff,InBufferm, MyExpParam->MySystemParam.m_nSamples)
+
+	      InBuffer += MyExpParam->MySystemParam.m_nSamples
+	      ippsZero_16s (Rebuff,MyExpParam->MySystemParam.m_nSamples);
+	      ippsZero_16s (Imbuff,MyExpParam->MySystemParam.m_nSamples);
+
+copperball:: init_pulses
+	     fAngle   = PI*0.125 # angulo para RE e IM
+	     DC_level =  500
+	     stdev    = 8
+	     ##############CON CONDIFICACION#############
+	     if  MyGRCParam.m_nBauds>0
+	     	 pulses = new Ipp16s*[MyExpParam->MyGRCParam.m_nNum_Codes]
+		 num_codes = MyExpPARAM->MyGRCParam.m_nNum_Codes
+		 for nc=0,MyGRCParam.m_nNum_Codes ,nc++
+		 {
+			pulse_size= MyExpParam->m_nBauds*Baudwidth
+			pulses[nc]= ippsMalloc_16s(pulse_size)
+		}
+	   ################SIN CONDIFICACION ################
+	      else 
+	      {		pulse= new Ipp16s
+			num_codes= 1
+	      	   	pulse_Size= fixRCP.m_fTXV/0.15+0.5
+			Ipp16s ones
+			ones = 600
+			pulse
+	      
+	      }

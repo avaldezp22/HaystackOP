@@ -1,0 +1,15 @@
+import numpy
+import math
+
+DH0=1.25
+samples  = 200
+H0 = 70.0
+x= range(samples)
+
+
+
+time_vec = (DH0*numpy.linspace(0, len(x)-1,num=len(x)) +H0)*(1.0e-3/15.0)
+fd       =  100
+
+d_signal = numpy.array(numpy.exp(1.0j*2.0*math.pi*fd*time_vec),dtype=numpy.complex64)
+print(d_signal)

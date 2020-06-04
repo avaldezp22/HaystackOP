@@ -1,0 +1,9 @@
+import numpy 
+
+
+
+
+
+
+time_vec = (DH0*numpy.linspace(0, len(x)-1,num=len(x)) +H0)(1e-6/150)
+print(time_vec)

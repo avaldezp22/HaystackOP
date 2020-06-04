@@ -1,0 +1,6 @@
+# pip install pygifme
+# sudo apt-get install  imagemagick
+# pip3 install -r argcomplete
+
+$ pygifme ~/Desktop/*.jpg 
+You now have a handsome animatio at ~/Desktop/animated.gif 

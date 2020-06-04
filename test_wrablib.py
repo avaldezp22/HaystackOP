@@ -18,9 +18,9 @@ for thisFile in fileList:
     validFilelist.append(thisFile)
     validFilelist.sort()
 
-print (validFilelist)
+#print (validFilelist)
 for thisFile in validFilelist:
-
+    print(thisFile)	
     fpath = path+thisFile
     f = wrl.util.get_wradlib_data_file(fpath)
     fcontent = wrl.io.read_rainbow(f)
@@ -76,10 +76,11 @@ for thisFile in validFilelist:
     cbar.set_label('reflectivity [' + unit + ']')
     pl.show()
 
-    print ("FIN")
-    import time
-    time.sleep(2)
-    pl.close()
+    #print ("FIN")
+    #import time
+    #time.sleep(2)
+    #pl.close()
+    # stop here
     #print(fcontent['data'])
     #data, metadata = wrl.io.read_dx(filename)
     #ax, pm = wrl.vis.plot_ppi(data) # simple diagnostic plot

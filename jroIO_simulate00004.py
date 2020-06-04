@@ -1,0 +1,73 @@
+import numpy
+import zmq
+import tempfile
+from io import StringIO
+########## 1  Heredamos JRODatareader
+from .jroIO_base import LOCALTIME,JRODatareader
+########## 2 Heredamos las propiedades de ProcessingUnit
+from schainpy.model.proc.jroproc_base import ProcessingUnit,Operation,MPDecorator
+########## 3 Importaremos las clases BascicHeader, SystemHeader, RadarControlHeader, ProcessingHeader
+from schainpy.model.data.jroheaderIO import PROCFLAG, BascicHeader,SystemHeader,RadarControlHeader, ProcessingHeader
+########## 4 Importaremos el objeto Voltge
+from schainpy.model.data.jrodata import Voltage
+
+@MPDecorator
+class SimulatorReader(JRODatareader,ProcessingUnit):
+    """
+    Esta clase permite generar datos de voltage desde perfiles simulados.
+    La lectura de los datos siempre se realiza por bloques. Los datos leidos
+    (array de 3 dimensiones:canales, perfiles,alturas) son almacenados en la
+    variable "buffer".
+                    canales, perfiles, alturas
+    """
+    def __init__(self):
+        """
+        Inicializador de la clases SimulatorReader
+        para generar datos de voltage simulados.
+        Input:
+            dataOut: Objeto de la clase Voltage. 
+            Este Objeto sera utilizado apra almacenar un perfil de datos
+            cada vez qe se haga un requerimiento (getData)
+        """
+        self.isConfig              = False
+        self.bascicHeaderObj       = BasicHeader(LOCALTIME)
+        self.systemHeaderObj       = SystemHeader()
+        self.radarControlHeaderObj = RadarControlHeader()
+        self.ProcessingHeaderObj   = ProcessingHeader()
+        self.profileIndex          = 2**32-1
+        self.dataOut               = Voltage()
+        
+    def getData(self): ### metodo prodpio de VoltageReader
+
+        if self.flaNoMoreFiles:
+            self.dataOut.flagNodata= True
+        self.flagDiscontinuousBlock=0
+        self.flagIsNewBlock       = 0
+        if self.__hasNotDataInBuffer():  # aqui es verdad
+            if not(self.readNextBlock()): # return 1 y por eso el if not salta  a getBasic Header
+                return 0
+            self.getFirstHeader() # atributo
+            self.reshapeData() # nTxx1 =1 return , n
+
+        if not self.getByBlock:
+            self.dataOut.flagDataAsBlock = False
+            self.dataOut.data = self.datablock[:, self.profileIndex, :]
+            self.dataOut.profileIndex = self.profileIndex
+
+            self.profileIndex += 1
+        else:
+            pass
+        self.getBasicHeader()
+        self.dataOut.realtime = self.searchFilesOnline
+
+        return self.dataOut.data
+
+
+    def run(self): # metodo propio
+        if not(self.isConfig):
+            self.setup(**kwargs)
+        self.isConfig = True
+        if self.server is None:
+            self.getData()
+        else:
+            self.getFromServer()

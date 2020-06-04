@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 
 def plot_cts(x,H0,DH0,plot_abs=False,plot_draw=True,plot_show=False):
     time_vec = DH0*numpy.linspace(0, len(x)-1,num=len(x)) +H0
+    print(time_vec)
     fig = plt.figure()
     plt.plot(time_vec, numpy.real(x),"blue")
     plt.plot(time_vec, numpy.imag(x),"red")
@@ -33,6 +34,15 @@ def plot_cts(x,H0,DH0,plot_abs=False,plot_draw=True,plot_show=False):
         plt.close(fig)
     if plot_show:
         plt.show()
+
+def wave_fft(x,plot_show=False):
+    fft = numpy.fft.fft(x)
+    fft = numpy.fft.fftshift(fft)
+    fft = fft / numpy.max(numpy.abs(fft))
+    #fft = np.abs(fft)**2.0
+    plot_draw= not (plot_show)
+    plot_cts(fft,0,1,plot_draw=plot_draw,plot_show=plot_show)
+
 
 #################################################################
 ##################### init_pulse
@@ -80,35 +90,53 @@ def jro_GenerateBlockOfData(m_nSamples,DC_level,stdev,m_nReference,pulses,num_co
     m_nSamples = m_nSamples
     DC_level   = DC_level
     stdev      = stdev
-    m_nReference= m_nReference
-    pulses      =pulses
-    num_codes   = num_codes
-    pulse_size  = pulse_size
-    prof_gen    = prof_gen
-    H0          = H0
-    DH0         = DH0
+    m_nR       = m_nReference
+    pulses     = pulses
+    num_codes  = num_codes
+    ps         = pulse_size
+    prof_gen   = prof_gen
+    H0         = H0
+    DH0        = DH0
     fAngle                            = 2.0*math.pi*(1/16)
 
+    # NOISE
+    Seed_r=random.seed(2)
+    Noise_r = numpy.random.normal(DC_level,stdev,m_nSamples)
+    Seed_i=random.seed(3)
+    Noise_i = numpy.random.normal(DC_level,stdev,m_nSamples)
+    Noise   = numpy.zeros(m_nSamples,dtype=complex)
+    Noise.real = Noise_r
+    Noise.imag = Noise_i
+    Pulso     = numpy.zeros(pulse_size,dtype=complex)
+
+    #DOPPLER
+    x          = m_nSamples
+    time_space = (DH0*numpy.linspace(0, x-1,num=x) +H0)
+    time_vec   = time_space*(1.0e-3/150.0)
+    fd         = 10
+    d_signal   = numpy.array(numpy.exp(1.0j*2.0*math.pi*fd*time_vec),dtype=numpy.complex64)
+
+
+    
     for i in range(m_nChannels):
         for k in range(prof_gen):
-            Seed=random.seed(2)
+            Pulso.real =  pulses[k%num_codes]
+            Pulso.imag =  pulses[k%num_codes]
+            
             InBuffer   = numpy.zeros(m_nSamples,dtype=complex)
-            Rebuff                         = numpy.zeros(m_nSamples)
-            Imbuff                         = numpy.zeros(m_nSamples)
-            Noise = numpy.random.normal(DC_level,stdev,m_nSamples)
-            Rebuff[m_nReference:(m_nReference+pulse_size)]=pulses[k%num_codes]
-            Imbuff[m_nReference:(m_nReference+pulse_size)]=pulses[k%num_codes]
+            
+            InBuffer[m_nR:m_nR+ps] = Pulso
 
-            Rebuff = Noise+Rebuff
-            Imbuff = Noise+Imbuff
+            InBuffer = Noise+ InBuffer
 
-            Rebuff[m_nReference:]=Rebuff[m_nReference:]*(math.cos( fAngle)*5)
-            Imbuff[m_nReference:]=Imbuff[m_nReference:]*(math.sin( fAngle)*5)
-            InBuffer.real = Rebuff
-            InBuffer.imag = Imbuff
-            print(InBuffer[:10])
-            print(InBuffer.shape)
+            InBuffer.real[m_nR:m_nR+ps] = InBuffer.real[m_nR:m_nR+ps]*(math.cos( fAngle)*5) 
+            InBuffer.imag[m_nR:m_nR+ps] = InBuffer.imag[m_nR:m_nR+ps]*(math.sin( fAngle)*5)
+
+            InBuffer=InBuffer
+            #print(InBuffer[:10])
+            #print(InBuffer.shape)
             plot_cts(InBuffer,H0=H0,DH0=DH0)
+            #wave_fft(x=InBuffer,plot_show=True)
             #time.sleep(1)
 
             
